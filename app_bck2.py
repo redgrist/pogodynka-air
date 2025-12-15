@@ -7,7 +7,7 @@ from typing import Optional, Dict, Any
 from flask import Flask, render_template_string
 
 # ====== KONFIG ======
-REFRESH_SECONDS = int(os.getenv("REFRESH_SECONDS", "30"))
+REFRESH_SECONDS = int(os.getenv("REFRESH_SECONDS", "5"))
 
 # Progi do "czerwonego" kafelka
 PM25_LIMIT = float(os.getenv("PM25_LIMIT", "25.0"))
@@ -97,51 +97,8 @@ HTML = r"""
         {% if aq_err %} • Błąd: <span class="mono">{{ aq_err }}</span>{% endif %}
       </div>
     </div>
-<div class="tile">
-  <h2>Auto-refresh</h2>
-  <div class="row"><div>Ostatnie odświeżenie</div><div><b id="last_refresh">—</b></div></div>
-  <div class="muted">Strona odświeża się automatycznie co 30 sekund.</div>
-</div>
 
-<script>
-  const REFRESH_SECONDS = {{ refresh_seconds|default(30) }};
-
-  function pad2(n){ return String(n).padStart(2, "0"); }
-
-  function setLastRefresh() {
-    const now = new Date();
-    const t = `${pad2(now.getHours())}:${pad2(now.getMinutes())}:${pad2(now.getSeconds())}`;
-    const el = document.getElementById("last_refresh");
-    if (el) el.textContent = t;
-  }
-
-  function startCountdown() {
-    let left = REFRESH_SECONDS;
-    const el = document.getElementById("countdown");
-
-    function tick() {
-      if (el) el.textContent = left;
-      left -= 1;
-
-      if (left < 0) {
-        // jeśli masz meta refresh, to i tak się odświeży,
-        // ale to daje pewne odświeżenie nawet bez meta
-        window.location.reload();
-        return;
-      }
-      setTimeout(tick, 1000);
-    }
-    tick();
-  }
-
-  // uruchom po załadowaniu DOM
-  document.addEventListener("DOMContentLoaded", () => {
-    setLastRefresh();
-    startCountdown();
-  });
-</script>
-
-
+  </div>
 </body>
 </html>
 """
