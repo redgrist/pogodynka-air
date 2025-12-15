@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  air-dashboard:
+    build: .
+    container_name: pogodynka
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+    devices:
+      - "/dev/serial0:/dev/serial0"
+      - "/dev/i2c-1:/dev/i2c-1"
+      - "/dev/i2c-2:/dev/i2c-2"
+    environment:
+      - REFRESH_SECONDS=5
+      - PM25_LIMIT=25.0
+      - PM10_LIMIT=50.0
+      - PMS_PORT=/dev/serial0
+      - PMS_BAUD=9600
+      - BMP_ENABLED=1
+      - BMP_ADDRS=0x76,0x77
+    # Jeśli Blinka/I2C dalej marudzi w kontenerze:
+    # privileged: true
+

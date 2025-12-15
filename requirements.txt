@@ -1,0 +1,6 @@
+flask
+requests
+adafruit-circuitpython-bmp280
+adafruit-blinka
+RPi.GPIO
+pyserial
