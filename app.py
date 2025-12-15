@@ -102,6 +102,20 @@ HTML = r"""
   <div class="row"><div>Ostatnie odświeżenie</div><div><b id="last_refresh">—</b></div></div>
   <div class="muted">Strona odświeża się automatycznie co 30 sekund.</div>
 </div>
+<div class="tile ok">
+  <h2>Clock</h2>
+
+  <div class="row">
+    <div>Aktualna godzina</div>
+    <div><b id="clock">--:--:--</b></div>
+  </div>
+
+  <div class="muted">
+    Czas lokalny przeglądarki
+  </div>
+</div>
+
+
 
 <script>
   const REFRESH_SECONDS = {{ refresh_seconds|default(30) }};
@@ -139,6 +153,24 @@ HTML = r"""
     setLastRefresh();
     startCountdown();
   });
+</script>
+<script>
+function updateClock() {
+  const now = new Date();
+
+  const hh = String(now.getHours()).padStart(2, '0');
+  const mm = String(now.getMinutes()).padStart(2, '0');
+  const ss = String(now.getSeconds()).padStart(2, '0');
+
+  document.getElementById("clock").textContent =
+    `${hh}:${mm}:${ss}`;
+}
+
+// uruchom od razu
+updateClock();
+
+// aktualizuj co sekundę
+setInterval(updateClock, 1000);
 </script>
 
 
